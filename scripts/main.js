@@ -7,9 +7,33 @@ function renderSeriesInTable(series) {
     console.log('Desplegando series');
     series.forEach(function (serie) {
         var trElement = document.createElement("tr");
-        trElement.innerHTML = "<td>".concat(serie.order, "</td>\n                           <td>").concat(serie.name, "</td>\n                           <td>").concat(serie.channel, "</td>\n                           <td>").concat(serie.seasons, "</td>");
+        trElement.innerHTML = "<td>".concat(serie.order, "</td>\n                          <td>").concat("", "</td>\n                           <td>").concat(serie.channel, "</td>\n                           <td>").concat(serie.seasons, "</td>");
+        var tdName = trElement.querySelector('td:nth-child(2)');
+        var anchor = document.createElement('a');
+        anchor.href = '#';
+        anchor.textContent = serie.name;
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            displayCard(serie);
+        });
+        if (tdName) {
+            tdName.appendChild(anchor);
+        }
         seriesTbody.appendChild(trElement);
     });
+}
+function displayCard(serie) {
+    var cardTitle = document.querySelector('.card-Name');
+    var cardText = document.querySelector('.card-Sinopsis');
+    var cardImg = document.querySelector('.card-ImageOnTop');
+    var cardLink = document.querySelector('.card-link');
+    if (cardTitle && cardText && cardImg && cardLink) {
+        cardTitle.textContent = serie.name;
+        cardText.textContent = serie.sinopsis;
+        cardImg.src = serie.image; //Las imagenes no sirven, y probe los links por aparte y sale el error 404 por eso en la 
+        // en la pagina no se ven presentes
+        cardLink.href = serie.link;
+    }
 }
 function getPromedioTemporadas(series) {
     var totalSeasons = 0;
